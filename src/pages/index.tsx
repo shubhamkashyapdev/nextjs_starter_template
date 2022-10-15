@@ -2,13 +2,15 @@ import { Button } from '@mantine/core';
 import { useEffect } from 'react';
 
 import { Form } from '@/components';
+import useAuth from '@/hooks/useAuth';
 import { Meta } from '@/layouts/Meta';
 import useAuthStore from '@/store/authStore';
 import { Main } from '@/templates/Main';
 
 const Index = () => {
   const authStore = useAuthStore((state) => state);
-  console.log({ authStore });
+  const { data, mutate } = useAuth('sanjeet', '12345678');
+
   useEffect(() => {
     authStore.setUserDetails({ name: 'Sanjeet Mishra' });
   }, []);
@@ -25,7 +27,7 @@ const Index = () => {
       <div className="my-8 flex justify-center">
         <div className="flex flex-row space-x-4">
           <Button
-            disabled={authStore.authenticated}
+            disabled={authStore.authenticated && data}
             onClick={() => {
               authStore.authenticateUser();
             }}
@@ -34,9 +36,10 @@ const Index = () => {
             Authenticate
           </Button>
           <Button
-            disabled={!authStore.authenticated}
+            disabled={!authStore.authenticated && !data}
             onClick={() => {
               authStore.logoutUser();
+              mutate(false);
             }}
             className="rounded-sm bg-gray-900 shadow-md"
           >
