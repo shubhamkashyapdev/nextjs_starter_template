@@ -1,65 +1,52 @@
-import { Blockquote, Button, Modal, Tooltip } from '@mantine/core'
-import { Alert } from 'flowbite-react'
-import { useState } from 'react'
+import { Button } from '@mantine/core';
+import { useEffect } from 'react';
 
-import { Form } from '@/components'
-import { Meta } from '@/layouts/Meta'
-import { Main } from '@/templates/Main'
-
-function Demo() {
-    return (
-        <Tooltip label="Tooltip">
-            <Button variant="outline">Button with tooltip</Button>
-        </Tooltip>
-    )
-}
-
-function BlockQuote() {
-    return (
-        <Blockquote cite="– Forrest Gump">
-            Life is like an npm install – you never know what you are going to
-            get.
-        </Blockquote>
-    )
-}
-
-function ModalComponent() {
-    const [opened, setOpened] = useState(false)
-    return (
-        <>
-            <Modal
-                opened={opened}
-                onClose={() => setOpened(false)}
-                title="Introduce yourself!"
-                withCloseButton={false}
-            >
-                Modal without header, press escape or click on overlay to close
-            </Modal>
-            <Button className="bg-black" onClick={() => setOpened(true)}>
-                Open Modal
-            </Button>
-        </>
-    )
-}
+import { Form } from '@/components';
+import { Meta } from '@/layouts/Meta';
+import useAuthStore from '@/store/authStore';
+import { Main } from '@/templates/Main';
 
 const Index = () => {
-    return (
-        <Main
-            meta={
-                <Meta
-                    title="Next.js Boilerplate Presentation"
-                    description="Next js Boilerplate is the perfect starter code for your project. Build your React application with the Next.js framework."
-                />
-            }
-        >
-            <h1 className="text-center font-bold">Next.js Starter</h1>
-            <Alert color="info">Alert</Alert>
-            <Demo />
-            <BlockQuote />
-            <ModalComponent />
-            <Form />
-        </Main>
-    )
-}
+  const authStore = useAuthStore((state) => state);
+  console.log({ authStore });
+  useEffect(() => {
+    authStore.setUserDetails({ name: 'Sanjeet Mishra' });
+  }, []);
+  return (
+    <Main
+      meta={
+        <Meta
+          title="Next.js Boilerplate Presentation"
+          description="Next js Boilerplate is the perfect starter code for your project. Build your React application with the Next.js framework."
+        />
+      }
+    >
+      <h1 className="text-center font-bold">Next.js Starter</h1>
+      <div className="my-8 flex justify-center">
+        <div className="flex flex-row space-x-4">
+          <Button
+            disabled={authStore.authenticated}
+            onClick={() => {
+              authStore.authenticateUser();
+            }}
+            className="rounded-sm bg-gray-900 shadow-md"
+          >
+            Authenticate
+          </Button>
+          <Button
+            disabled={!authStore.authenticated}
+            onClick={() => {
+              authStore.logoutUser();
+            }}
+            className="rounded-sm bg-gray-900 shadow-md"
+          >
+            Logout
+          </Button>
+        </div>
+      </div>
+      <Form />
+    </Main>
+  );
+};
 
-export default Index
+export default Index;

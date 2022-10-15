@@ -1,8 +1,9 @@
-import { useForm } from "@mantine/form";
-import { randomId } from "@mantine/hooks";
-import dayjs from "dayjs";
-import React, { useState } from "react";
-import { Image } from "@mantine/core";
+import { Image } from '@mantine/core';
+import { useForm } from '@mantine/form';
+import { randomId } from '@mantine/hooks';
+import dayjs from 'dayjs';
+import React, { useState } from 'react';
+
 import {
   DateInputComponent,
   DropzoneComponent,
@@ -10,25 +11,25 @@ import {
   SelectComponent,
   TextAreaComponent,
   TextInputComponent,
-} from "../index";
+} from '../index';
 
 const Form = () => {
   const form = useForm({
     initialValues: {
-      projectName: "",
-      mintPrice: "",
-      slug: "",
+      projectName: '',
+      mintPrice: '',
+      slug: '',
       mintDate: null,
       noOfWinners: 0,
       raffleStartDate: null,
       raffleEndDate: null,
-      twitterLink: "",
-      discordLink: "",
-      Discordserverid: "",
-      projectInformation: "",
+      twitterLink: '',
+      discordLink: '',
+      Discordserverid: '',
+      projectInformation: '',
       profileAvatar: null,
       profileBanner: null,
-      projectFAQs: [{ question: "", answer: "", key: randomId() }],
+      projectFAQs: [{ question: '', answer: '', key: randomId() }],
     },
   });
 
@@ -40,29 +41,20 @@ const Form = () => {
     console.log(form.values);
   };
 
-  const [avatarImage, setAvatarImage] = useState('')
-  const [bannerImage, setBannerImage] = useState('')
+  const [avatarImage, setAvatarImage] = useState('');
+  const [bannerImage, setBannerImage] = useState('');
 
-  const handleDrop = (image: any, file: any , name : string) => {
+  const handleDrop = (_: any, file: any, name: string) => {
     const imageUrl = URL.createObjectURL(file[0]);
-    console.log({ image, file , imageUrl });
-    console.log(imageUrl);
-    if(name == 'profileBanner'){
+    if (name === 'profileBanner') {
       setBannerImage(imageUrl);
-    }
-    else if(name == 'profileAvatar'){
+    } else if (name === 'profileAvatar') {
       setAvatarImage(imageUrl);
     }
-
   };
-
-
 
   return (
     <>
-      <h1 className="py-4 text-center font-sans font-bold tracking-wider">
-        New Raffle Form
-      </h1>
       <form
         className="flex flex-col space-y-4 md:px-4 lg:px-6"
         onSubmit={form.onSubmit(handelsubmit)}
@@ -73,7 +65,7 @@ const Form = () => {
           label="Project Name"
           placeholder="Project Name"
           type="text"
-        />{" "}
+        />
         <TextInputComponent
           form={form}
           name="slug"
@@ -100,16 +92,16 @@ const Form = () => {
           label="Number of Winners"
           placeholder="0"
           data={[
-            { value: 1, label: "1" },
-            { value: 2, label: "2" },
-            { value: 3, label: "3" },
-            { value: 4, label: "4" },
-            { value: 5, label: "5" },
-            { value: 6, label: "6" },
-            { value: 7, label: "7" },
-            { value: 8, label: "8" },
-            { value: 9, label: "9" },
-            { value: 10, label: "10" },
+            { value: 1, label: '1' },
+            { value: 2, label: '2' },
+            { value: 3, label: '3' },
+            { value: 4, label: '4' },
+            { value: 5, label: '5' },
+            { value: 6, label: '6' },
+            { value: 7, label: '7' },
+            { value: 8, label: '8' },
+            { value: 9, label: '9' },
+            { value: 10, label: '10' },
           ]}
         />
         {/* raffle date group */}
@@ -193,10 +185,10 @@ const Form = () => {
         {/* image Preview  */}
         <div className="flex space-x-6 ">
           <div className="flex-[2]">
-            <Image src={avatarImage} fit={"cover"} />
+            <Image src={avatarImage} fit={'cover'} alt="" />
           </div>
           <div className="flex-[3]">
-            <Image src={bannerImage} fit={"cover"} />
+            <Image src={bannerImage} fit={'cover'} alt="" />
           </div>
         </div>
         {/* image Preview ends here */}
