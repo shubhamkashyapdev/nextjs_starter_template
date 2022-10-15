@@ -1,7 +1,8 @@
-import { Text, useMantineTheme } from '@mantine/core'
-import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone'
-import type { FC } from 'react'
-import { Photo, Upload, X } from 'tabler-icons-react'
+import { Group, Text, useMantineTheme } from "@mantine/core";
+import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
+import { IconPhoto, IconUpload, IconX } from "@tabler/icons";
+import type { FC } from "react";
+import { Photo, Upload, X } from "tabler-icons-react";
 
 // const getIconColor = (status: string, theme: any) => {
 //     // @ts-ignore
@@ -16,83 +17,107 @@ import { Photo, Upload, X } from 'tabler-icons-react'
 
 // @ts-ignore
 function ImageUploadIcon({ status, ...props }) {
-    if (status.accepted) {
-        return <Upload {...props} />
-    }
+  if (status.accepted) {
+    return <Upload {...props} />;
+  }
 
-    if (status.rejected) {
-        return <X {...props} />
-    }
+  if (status.rejected) {
+    return <X {...props} />;
+  }
 
-    return <Photo {...props} />
+  return <Photo {...props} />;
 }
 
 export const dropzoneChildren = (status: any, theme: any, placeholder: any) => (
-    <div className="flex flex-col items-center justify-center p-4">
-        <div>
-            <ImageUploadIcon
-                status={status}
-                style={{ color: 'white' }}
-                size={80}
-            />
-        </div>
-        <div>
-            <Text size="xl">{placeholder}</Text>
-        </div>
+  <div className="flex flex-col items-center justify-center p-4">
+    <div>
+      <ImageUploadIcon
+        status={status}
+        size={80}
+        color={theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]}
+      />
     </div>
-)
+    <div>
+      <Text size="xl">{placeholder}</Text>
+    </div>
+  </div>
+);
 
 type DropZoneProps = {
-    label: string
-    placeholder: string
-    name: string
-    onDrop: any
-}
+  label: string;
+  placeholder: string;
+  name: string;
+  onDrop: any;
+};
 
 const DropzoneComponent: FC<DropZoneProps> = ({
-    label,
-    placeholder,
-    name,
-    onDrop,
+  label,
+  placeholder,
+  name,
+  onDrop,
 }) => {
-    const imageUploader = (imageName: string, files: any) => {
-        if (files[0] === undefined) {
-            alert('finished')
-            return
-        }
-        if (files[0].type === 'image/jpeg' || files[0].type === 'image/png') {
-            const data = new FormData()
-            data.append('file', files[0])
-            data.append('upload_preset', 'chatapp')
-            data.append('cloud_name', 'sourabhvaish')
-            fetch('https://api.cloudinary.com/v1_1/sourabhvaish/image/upload', {
-                method: 'post',
-                body: data,
-            })
-                .then((res) => res.json())
-                .then((response: any) => {
-                    onDrop(imageName, response?.url)
-                })
-                .catch((err) => {
-                    console.error(err)
-                })
-        }
+  const imageUploader = (imageName: string, files: any ) => {
+    if (files[0] === undefined) {
+      alert("finished");
+      return;
     }
-    const theme = useMantineTheme()
-    return (
-        <div>
-            <h5>{label}</h5>
-            <Dropzone
-                onDrop={(files: any) => imageUploader(name, files)}
-                maxSize={10 * 1024 ** 2}
-                accept={IMAGE_MIME_TYPE}
-                multiple={false}
-            >
-                {/* @ts-ignore */}
-                {(status: any) => dropzoneChildren(status, theme, placeholder)}
-            </Dropzone>
-        </div>
-    )
-}
+    // if (files[0].type === "image/jpeg" || files[0].type === "image/png") {
+    //   const data = new FormData();
+    //   data.append("file", files[0]);
+    //   data.append("upload_preset", "chatapp");
+    //   data.append("cloud_name", "sourabhvaish");
+    //   fetch("https://api.cloudinary.com/v1_1/sourabhvaish/image/upload", {
+    //     method: "post",
+    //     body: data,
+    //   })
+    //     .then((res) => res.json())
+    //     .then((response: any) => {
+    //       onDrop(imageName, response?.url);
+    //     })
+    //     .catch((err) => {
+    //       console.error(err);
+    //     });
+    // }
 
-export default DropzoneComponent
+    onDrop(imageName, files , name);
+
+  };
+  const theme = useMantineTheme();
+  return (
+    <div>
+      <h5>{label}</h5>
+      {/* @ts-ignore */}
+      <Dropzone
+        onDrop={(files: any) => imageUploader(name, files)}
+        maxSize={3 * 1024 ** 2}
+        accept={IMAGE_MIME_TYPE}
+        multiple={false}
+      >
+        {/* @ts-ignore */}
+        <Group
+          position="center"
+          spacing="xl"
+          style={{ minHeight: 220, pointerEvents: "none" }}
+        >
+          <Dropzone.Idle>
+            <IconPhoto size={50} stroke={1.5} />
+          </Dropzone.Idle>
+
+          <Dropzone.Accept>
+            <IconUpload size={50} stroke={1.5} />
+          </Dropzone.Accept>
+
+          <Dropzone.Reject>
+            <IconX
+              size={50}
+              stroke={1.5}
+              color={theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]}
+            />
+          </Dropzone.Reject>
+        </Group>
+      </Dropzone>
+    </div>
+  );
+};
+
+export default DropzoneComponent;
