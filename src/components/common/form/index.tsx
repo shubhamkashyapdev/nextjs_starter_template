@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import {
   DateInputComponent,
   DropzoneComponent,
+  FAQRepeaterComponent,
   NumberInputComponent,
   SelectComponent,
   TextAreaComponent,
@@ -16,20 +17,20 @@ import {
 const Form = () => {
   const form = useForm({
     initialValues: {
-      projectName: '',
-      mintPrice: '',
-      slug: '',
+      projectName: "",
+      mintPrice: "",
+      slug: "",
       mintDate: null,
       noOfWinners: 0,
       raffleStartDate: null,
       raffleEndDate: null,
-      twitterLink: '',
-      discordLink: '',
-      Discordserverid: '',
-      projectInformation: '',
+      twitterLink: "",
+      discordLink: "",
+      Discordserverid: "",
+      projectInformation: "",
       profileAvatar: null,
       profileBanner: null,
-      projectFAQs: [{ question: '', answer: '', key: randomId() }],
+      projectFAQs: [{ question: "demo data ", answer: "demo answer", key: randomId() }],
     },
   });
 
@@ -198,6 +199,10 @@ const Form = () => {
             Submit
           </button>
         </div>
+
+{/* nested input  */}
+
+                <FAQRepeaterComponent form={form} name='nested list' label='nested list component' action={'add new input'} answere={'answer'} question={'Question'} />
       </form>
     </>
   );
