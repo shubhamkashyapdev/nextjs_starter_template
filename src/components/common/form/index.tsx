@@ -1,8 +1,9 @@
-import { Image } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { randomId } from '@mantine/hooks';
-import dayjs from 'dayjs';
-import React, { useState } from 'react';
+import useCloudinary from "@/hooks/useCloudinary";
+import { Image } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { randomId } from "@mantine/hooks";
+import dayjs from "dayjs";
+import React, { useState } from "react";
 
 import {
   DateInputComponent,
@@ -12,7 +13,7 @@ import {
   SelectComponent,
   TextAreaComponent,
   TextInputComponent,
-} from '../index';
+} from "../index";
 
 const Form = () => {
   const form = useForm({
@@ -30,7 +31,11 @@ const Form = () => {
       projectInformation: "",
       profileAvatar: null,
       profileBanner: null,
-      projectFAQs: [{ question: "demo data ", answer: "demo answer", key: randomId() }],
+      avatarImage: null,
+      bannerImage: null,
+      projectFAQs: [
+        { question: "demo data ", answer: "demo answer", key: randomId() },
+      ],
     },
   });
 
@@ -40,17 +45,25 @@ const Form = () => {
   const handelsubmit = async () => {
     // eslint-disable-next-line no-console
     console.log(form.values);
+    // uploading avatar image
+    const { image } = await useCloudinary(form.values.avatarImage);
+    console.log({ image });
+    // uploading banner image
+    // const bannerImageResponse = useCloudinary(form.values.bannerImage);
+    // console.log({bannerImageResponse});
   };
 
-  const [avatarImage, setAvatarImage] = useState('');
-  const [bannerImage, setBannerImage] = useState('');
+  const [avatarImage, setAvatarImage] = useState("");
+  const [bannerImage, setBannerImage] = useState("");
 
   const handleDrop = (_: any, file: any, name: string) => {
     const imageUrl = URL.createObjectURL(file[0]);
-    if (name === 'profileBanner') {
+    if (name === "profileBanner") {
       setBannerImage(imageUrl);
-    } else if (name === 'profileAvatar') {
+      form.setFieldValue("bannerImage", file[0]);
+    } else if (name === "profileAvatar") {
       setAvatarImage(imageUrl);
+      form.setFieldValue("avatarImage", file[0]);
     }
   };
 
@@ -93,16 +106,16 @@ const Form = () => {
           label="Number of Winners"
           placeholder="0"
           data={[
-            { value: 1, label: '1' },
-            { value: 2, label: '2' },
-            { value: 3, label: '3' },
-            { value: 4, label: '4' },
-            { value: 5, label: '5' },
-            { value: 6, label: '6' },
-            { value: 7, label: '7' },
-            { value: 8, label: '8' },
-            { value: 9, label: '9' },
-            { value: 10, label: '10' },
+            { value: 1, label: "1" },
+            { value: 2, label: "2" },
+            { value: 3, label: "3" },
+            { value: 4, label: "4" },
+            { value: 5, label: "5" },
+            { value: 6, label: "6" },
+            { value: 7, label: "7" },
+            { value: 8, label: "8" },
+            { value: 9, label: "9" },
+            { value: 10, label: "10" },
           ]}
         />
         {/* raffle date group */}
@@ -184,25 +197,39 @@ const Form = () => {
         </div>
         {/* dropzone group ends */}
         {/* image Preview  */}
-        <div className="flex space-x-6 ">
-          <div className="flex-[2]">
-            <Image src={avatarImage} fit={'cover'} alt="" />
+
+        {(avatarImage || bannerImage) && (
+          <div className="flex space-x-6  h-[100px] overflow-hidden">
+            {avatarImage && (
+              <div className="flex-[2] ">
+                <Image src={avatarImage} fit={"contain"} alt="" height={100} />
+              </div>
+            )}
+
+            {bannerImage && (
+              <div className="flex-[3]">
+                <Image src={bannerImage} fit={"contain"} alt="" height={100} />
+              </div>
+            )}
           </div>
-          <div className="flex-[3]">
-            <Image src={bannerImage} fit={'cover'} alt="" />
-          </div>
-        </div>
+        )}
+
         {/* image Preview ends here */}
+        {/* nested input  */}
+        <FAQRepeaterComponent
+          form={form}
+          name="nested list"
+          label="nested list component"
+          action={"add new input"}
+          answere={"answer"}
+          question={"Question"}
+        />
         {/* project FAQs ends */}
         <div className="flex items-center justify-center pt-8">
           <button className="h-[45px] w-[250px] rounded-full bg-gray-700 font-sans  text-base font-bold tracking-wide text-white shadow-lg">
             Submit
           </button>
         </div>
-
-{/* nested input  */}
-
-                <FAQRepeaterComponent form={form} name='nested list' label='nested list component' action={'add new input'} answere={'answer'} question={'Question'} />
       </form>
     </>
   );
