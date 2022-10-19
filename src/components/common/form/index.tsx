@@ -43,14 +43,13 @@ const Form = () => {
   //     form.setFieldValue(name, value)
   // }
   const handelsubmit = async () => {
-    // eslint-disable-next-line no-console
     console.log(form.values);
     // uploading avatar image
-    const { image } = await useCloudinary(form.values.avatarImage);
-    console.log({ image });
+    const avatarImage = await useCloudinary(form.values.avatarImage);
+    console.log({ avatarImage });
     // uploading banner image
-    // const bannerImageResponse = useCloudinary(form.values.bannerImage);
-    // console.log({bannerImageResponse});
+    const bannerImageResponse = await useCloudinary(form.values.bannerImage);
+    console.log({bannerImageResponse});
   };
 
   const [avatarImage, setAvatarImage] = useState("");
