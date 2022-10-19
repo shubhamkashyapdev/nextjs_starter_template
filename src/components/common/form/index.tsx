@@ -1,9 +1,10 @@
-import useCloudinary from "@/hooks/useCloudinary";
-import { Image } from "@mantine/core";
-import { useForm } from "@mantine/form";
-import { randomId } from "@mantine/hooks";
-import dayjs from "dayjs";
-import React, { useState } from "react";
+import { Image } from '@mantine/core';
+import { useForm } from '@mantine/form';
+import { randomId } from '@mantine/hooks';
+import dayjs from 'dayjs';
+import React, { useState } from 'react';
+
+import useCloudinary from '@/hooks/useCloudinary';
 
 import {
   DateInputComponent,
@@ -13,28 +14,28 @@ import {
   SelectComponent,
   TextAreaComponent,
   TextInputComponent,
-} from "../index";
+} from '../index';
 
 const Form = () => {
   const form = useForm({
     initialValues: {
-      projectName: "",
-      mintPrice: "",
-      slug: "",
+      projectName: '',
+      mintPrice: '',
+      slug: '',
       mintDate: null,
       noOfWinners: 0,
       raffleStartDate: null,
       raffleEndDate: null,
-      twitterLink: "",
-      discordLink: "",
-      Discordserverid: "",
-      projectInformation: "",
+      twitterLink: '',
+      discordLink: '',
+      Discordserverid: '',
+      projectInformation: '',
       profileAvatar: null,
       profileBanner: null,
       avatarImage: null,
       bannerImage: null,
       projectFAQs: [
-        { question: "demo data ", answer: "demo answer", key: randomId() },
+        { question: 'demo data ', answer: 'demo answer', key: randomId() },
       ],
     },
   });
@@ -43,26 +44,27 @@ const Form = () => {
   //     form.setFieldValue(name, value)
   // }
   const handelsubmit = async () => {
-    console.log(form.values);
     // uploading avatar image
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const avatarImage = await useCloudinary(form.values.avatarImage);
     console.log({ avatarImage });
     // uploading banner image
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const bannerImageResponse = await useCloudinary(form.values.bannerImage);
-    console.log({bannerImageResponse});
+    console.log({ bannerImageResponse });
   };
 
-  const [avatarImage, setAvatarImage] = useState("");
-  const [bannerImage, setBannerImage] = useState("");
+  const [avatarImage, setAvatarImage] = useState('');
+  const [bannerImage, setBannerImage] = useState('');
 
   const handleDrop = (_: any, file: any, name: string) => {
     const imageUrl = URL.createObjectURL(file[0]);
-    if (name === "profileBanner") {
+    if (name === 'profileBanner') {
       setBannerImage(imageUrl);
-      form.setFieldValue("bannerImage", file[0]);
-    } else if (name === "profileAvatar") {
+      form.setFieldValue('bannerImage', file[0]);
+    } else if (name === 'profileAvatar') {
       setAvatarImage(imageUrl);
-      form.setFieldValue("avatarImage", file[0]);
+      form.setFieldValue('avatarImage', file[0]);
     }
   };
 
@@ -105,16 +107,16 @@ const Form = () => {
           label="Number of Winners"
           placeholder="0"
           data={[
-            { value: 1, label: "1" },
-            { value: 2, label: "2" },
-            { value: 3, label: "3" },
-            { value: 4, label: "4" },
-            { value: 5, label: "5" },
-            { value: 6, label: "6" },
-            { value: 7, label: "7" },
-            { value: 8, label: "8" },
-            { value: 9, label: "9" },
-            { value: 10, label: "10" },
+            { value: 1, label: '1' },
+            { value: 2, label: '2' },
+            { value: 3, label: '3' },
+            { value: 4, label: '4' },
+            { value: 5, label: '5' },
+            { value: 6, label: '6' },
+            { value: 7, label: '7' },
+            { value: 8, label: '8' },
+            { value: 9, label: '9' },
+            { value: 10, label: '10' },
           ]}
         />
         {/* raffle date group */}
@@ -198,16 +200,16 @@ const Form = () => {
         {/* image Preview  */}
 
         {(avatarImage || bannerImage) && (
-          <div className="flex space-x-6  h-[100px] overflow-hidden">
+          <div className="flex h-[100px]  space-x-6 overflow-hidden">
             {avatarImage && (
               <div className="flex-[2] ">
-                <Image src={avatarImage} fit={"contain"} alt="" height={100} />
+                <Image src={avatarImage} fit={'contain'} alt="" height={100} />
               </div>
             )}
 
             {bannerImage && (
               <div className="flex-[3]">
-                <Image src={bannerImage} fit={"contain"} alt="" height={100} />
+                <Image src={bannerImage} fit={'contain'} alt="" height={100} />
               </div>
             )}
           </div>
@@ -219,9 +221,9 @@ const Form = () => {
           form={form}
           name="nested list"
           label="nested list component"
-          action={"add new input"}
-          answere={"answer"}
-          question={"Question"}
+          action={'add new input'}
+          answere={'answer'}
+          question={'Question'}
         />
         {/* project FAQs ends */}
         <div className="flex items-center justify-center pt-8">
